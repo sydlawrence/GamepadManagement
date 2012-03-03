@@ -1,3 +1,37 @@
+/*
+ * Polyfill for webkitGamepadConnected/webkitGamepadDisconnected
+ * by Joe Lambert (@joelambert)
+ */
+(function() {
+	var knownGamePads = new Array(4);
+	
+	var poll = setInterval(function(){
+		for(var i=0; i<navigator.webkitGamepads.length; i++) {
+			var g = navigator.webkitGamepads[i];
+			
+			// New gamepad
+			if(g !== undefined && knownGamePads[i] === undefined) {
+				knownGamePads[i] = g;
+				
+				var evt = document.createEvent("Event");
+				evt.initEvent('webkitGamepadConnected', true, true );
+				evt.gamepad = g;
+				window.dispatchEvent(evt);
+			}
+			// Gamepad removed
+			else if(g === undefined && knownGamePads[i] !== undefined) {
+				var evt = document.createEvent("Event");
+				evt.initEvent('webkitGamepadDisconnected', true, true );
+				evt.gamepad = knownGamePads[i];
+				window.dispatchEvent(evt);
+				
+				knownGamePads[i] = undefined;
+			}
+		}
+	}, 600);
+})();
+
+
 GamepadManagement =  {
 
   // an array to keep all the connected gamepads	
