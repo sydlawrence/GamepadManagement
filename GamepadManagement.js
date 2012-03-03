@@ -1,7 +1,7 @@
 /*
- * Polyfill for webkitGamepadConnected/webkitGamepadDisconnected
- * by Joe Lambert (@joelambert)
- */
+* Polyfill for webkitGamepadConnected/webkitGamepadDisconnected
+* by Joe Lambert (@joelambert)
+*/
 (function() {
 	var knownGamePads = new Array(4);
 	
